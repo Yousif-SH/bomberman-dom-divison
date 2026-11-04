@@ -1,21 +1,14 @@
 # Bomberman-DOM Commit Plan
 
-This plan publishes the finished project as 28 commits over 5 days: 10 from Yousif and 9 each from Mohammed and Osama. Each person commits only their own part, from their own machine and Gitea account.
+This plan publishes the finished project as 27 commits over 3 days, 9 from each member. Each person commits only their own part, from their own machine and Gitea account.
 
-Commit 1 is already pushed, so the next one to run is commit 2.
+You can also read this plan online: https://github.com/Yousif-SH/bomberman-dom-divison/blob/main/README.md
 
-The project lives in a `bomberman-dom/` folder inside the repository, so a clone looks like this:
-
-```
-bomberman-dom/            the clone: run git commands here
-├── README.md
-└── bomberman-dom/        the project: run npm and node commands here
-    ├── client/
-    ├── server/
-    └── ...
-```
-
-The paths in this table are inside the project folder:
+| Day | Commits  | Done by the end of the day                         |
+| --- | -------- | -------------------------------------------------- |
+| 1   | 1 to 9   | Framework, shared rules, map and board             |
+| 2   | 10 to 18 | Server, lobby and screens, so the game is playable |
+| 3   | 19 to 27 | Tests and docs                                     |
 
 | Member             | Parts                                                                                                                                             |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -23,28 +16,9 @@ The paths in this table are inside the project folder:
 | **Mohammed** | Mini-framework and rendering: `framework/`, the game client, the styles and their tests, plus the rendering docs                                |
 | **Osama**    | Multiplayer and lobby: `server/index.js`, `server/room.js`, the client's network layer, the lobby screens and their tests, plus the run guide |
 
-## Setup (once per person)
-
-Mohammed and Osama: wait until commit 2 is pushed. If you already cloned or unzipped an earlier copy, delete it and start again.
-
-Yousif sends the team `bomberman-dom-final.zip`, which is at the top of the repository and holds the whole `bomberman-dom/` folder. Do not use `bomberman-dom.zip`: it is the old copy, without the fixes.
-
-Put the zip next to where you will clone, then run these in a terminal. On Windows, use Git Bash:
-
-```bash
-git clone https://learn.reboot01.com/git/yhesham/bomberman-dom.git
-cd bomberman-dom
-git config user.name "Your Name"
-git config user.email "your-gitea-email@example.com"
-unzip -o ../bomberman-dom-final.zip
-npm install --prefix bomberman-dom
-```
-
-Yousif's clone already has the final files, so Yousif only needs to run `npm install --prefix bomberman-dom` and check the `git config` values.
-
 ## Before every commit
 
-Run all `git` commands from the top of the clone. Run these two first. They bring your clone up to the latest commit and leave your files alone:
+Run these two commands first. They bring your clone up to the latest commit and leave your files alone:
 
 ```bash
 git fetch origin
@@ -53,38 +27,40 @@ git reset origin/main
 
 Do not use `git pull` here. It stops with "untracked working tree files would be overwritten" because every file is already in your folder.
 
+`git status` may show `.gitignore`, `package.json` and `package-lock.json` as modified. That is only line endings, so ignore it.
+
 ## How the project stays working
 
-Files are added in dependency order. To run the project, `cd bomberman-dom` first, then use `npm start` or `node tests/...`.
+Files are added in dependency order, and every file is added exactly once.
 
-| After commit | What works |
-|---|---|
-| 2 | `npm install` in the project folder |
-| 13 | `npm start` runs the server. The page returns 404 until commit 19 |
-| 19 | The whole game is playable in the browser |
-| 20 to 28 | Tests and docs only, so the game keeps working |
+| After commit | What works                                                          |
+| ------------ | ------------------------------------------------------------------- |
+| 1            | `npm install`                                                     |
+| 12           | `npm start` runs the server. The page returns 404 until commit 18 |
+| 18           | The whole game is playable in the browser                           |
+| 19 to 27     | Tests and docs only, so the game keeps working                      |
 
-`client/net.js` and `client/input.js` import each other, so they land in two neighbouring commits. Nothing loads either file until `client/main.js` arrives in commit 19.
+`client/net.js` and `client/input.js` import each other, so they land in two neighbouring commits. Nothing loads either file until `client/main.js` arrives in commit 18.
 
-Every file is added once, so the later commits add tests and docs for earlier work. There are two exceptions: commit 2 moves the three files from commit 1 into the project folder, and commit 28 updates `README.md`, which already exists.
+Because each file is added once, the later commits add tests and docs for earlier work. They do not change earlier files, with one exception: `README.md` already exists, and commit 27 corrects its project structure section.
 
 ## Files that stay out of git
 
-These are all listed in `bomberman-dom/.gitignore`:
+These are all listed in `.gitignore`:
 
-| Pattern                                                                      | Why                                                                    |
-| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| `node_modules/`                                                            | Created by `npm install`                                             |
-| `*.zip`                                                                    | Local copies of the project |
-| `COMMIT_PLAN.md`                                                           | This file                                                              |
-| `.claude/`, `.vscode/`, `.idea/`                                       | Editor and tool settings                                               |
-| `*.log`, `npm-debug.log*`, `.DS_Store`, `Thumbs.db`, `desktop.ini` | Logs and operating system files                                        |
+| Pattern                                                                      | Why                             |
+| ---------------------------------------------------------------------------- | ------------------------------- |
+| `node_modules/`                                                            | Created by `npm install`      |
+| `*.zip`                                                                    | Local copies of the project     |
+| `COMMIT_PLAN.md`                                                           | This file                       |
+| `.claude/`, `.vscode/`, `.idea/`                                       | Editor and tool settings        |
+| `*.log`, `npm-debug.log*`, `.DS_Store`, `Thumbs.db`, `desktop.ini` | Logs and operating system files |
 
 ---
 
 ### Yousif — Commit 1
 
-> **Note:** Day 1. Already pushed as `3246513`, so skip this one.
+> **Note:** Day 1. This is the first commit, so there is no wait.
 
 ```bash
 git add .gitignore package.json package-lock.json
@@ -94,32 +70,16 @@ git push
 
 **Description:** Sets up the Node project. `package.json` turns on ES modules and defines `npm start`, and `ws` is the only dependency. It runs on the server only, so the browser loads no third-party code.
 
-`npm start` has nothing to run yet. That changes in commit 13.
+`npm start` has nothing to run yet. That changes in commit 12.
 
 ---
 
-### Yousif — Commit 2
+### Mohammed — Commit 2
 
 > **Note:** Day 1. Wait 2 hours after the previous commit.
 
 ```bash
-git add .gitignore package.json package-lock.json bomberman-dom/.gitignore bomberman-dom/package.json bomberman-dom/package-lock.json
-git commit -m "Move package config into the bomberman-dom folder"
-git push
-```
-
-**Description:** Moves `.gitignore`, `package.json` and `package-lock.json` from the top of the repository into the `bomberman-dom/` folder, where the rest of the project will live. Git records this as a rename, so the files keep their history.
-
-`npm install` now runs inside that folder, and every commit after this one adds its files there.
-
----
-
-### Mohammed — Commit 3
-
-> **Note:** Day 1. Wait 3 hours after the previous commit.
-
-```bash
-git add bomberman-dom/framework/dom.js bomberman-dom/framework/diff.js
+git add framework/dom.js framework/diff.js
 git commit -m "Add mini-framework DOM rendering and diffing"
 git push
 ```
@@ -133,12 +93,12 @@ git push
 
 ---
 
-### Yousif — Commit 4
+### Yousif — Commit 3
 
-> **Note:** Day 1. Wait 3 hours after the previous commit.
+> **Note:** Day 1. Wait 1 hour after the previous commit.
 
 ```bash
-git add bomberman-dom/shared/constants.js bomberman-dom/shared/protocol.js
+git add shared/constants.js shared/protocol.js
 git commit -m "Add shared game constants and message protocol"
 git push
 ```
@@ -149,12 +109,12 @@ git push
 
 ---
 
-### Mohammed — Commit 5
+### Mohammed — Commit 4
 
-> **Note:** Day 1. Wait 4 hours after the previous commit.
+> **Note:** Day 1. Wait 2 hours after the previous commit.
 
 ```bash
-git add bomberman-dom/framework/state.js bomberman-dom/framework/events.js bomberman-dom/framework/app.js bomberman-dom/framework/router.js bomberman-dom/framework/index.js
+git add framework/state.js framework/events.js framework/app.js framework/router.js framework/index.js
 git commit -m "Add framework store, events, router and app entry"
 git push
 ```
@@ -171,12 +131,12 @@ git push
 
 ---
 
-### Osama — Commit 6
+### Osama — Commit 5
 
-> **Note:** Day 1. Wait 2 hours after the previous commit.
+> **Note:** Day 1. Wait 1 hour after the previous commit.
 
 ```bash
-git add bomberman-dom/client/store.js bomberman-dom/client/components/Notice.js
+git add client/store.js client/components/Notice.js
 git commit -m "Add client store and connection notice"
 git push
 ```
@@ -187,12 +147,12 @@ git push
 
 ---
 
-### Yousif — Commit 7
+### Yousif — Commit 6
 
-> **Note:** Day 2. Wait until the next day.
+> **Note:** Day 1. Wait 2 hours after the previous commit.
 
 ```bash
-git add bomberman-dom/shared/physics.js
+git add shared/physics.js
 git commit -m "Add player movement and collision physics"
 git push
 ```
@@ -203,12 +163,12 @@ Each step moves a 36px hitbox on one axis at a time, so a player slides along a 
 
 ---
 
-### Osama — Commit 8
+### Osama — Commit 7
 
-> **Note:** Day 2. Wait 2 hours after the previous commit.
+> **Note:** Day 1. Wait 1 hour after the previous commit.
 
 ```bash
-git add bomberman-dom/client/components/Chat.js
+git add client/components/Chat.js
 git commit -m "Add real-time chat component"
 git push
 ```
@@ -219,12 +179,12 @@ During a match, sending a message or pressing Escape returns the keyboard to the
 
 ---
 
-### Yousif — Commit 9
+### Yousif — Commit 8
 
-> **Note:** Day 2. Wait 3 hours after the previous commit.
+> **Note:** Day 1. Wait 2 hours after the previous commit.
 
 ```bash
-git add bomberman-dom/server/map.js bomberman-dom/server/bombs.js
+git add server/map.js server/bombs.js
 git commit -m "Add random map generation and bomb blast logic"
 git push
 ```
@@ -237,12 +197,12 @@ git push
 
 ---
 
-### Mohammed — Commit 10
+### Mohammed — Commit 9
 
-> **Note:** Day 2. Wait 2 hours after the previous commit.
+> **Note:** Day 1. Wait 1 hour after the previous commit.
 
 ```bash
-git add bomberman-dom/client/gameState.js bomberman-dom/client/board.js
+git add client/gameState.js client/board.js
 git commit -m "Add per-frame game state and pooled DOM board"
 git push
 ```
@@ -255,12 +215,12 @@ Players move with `translate3d`. Other sprites use a 2D `translate`, so a restin
 
 ---
 
-### Yousif — Commit 11
+### Yousif — Commit 10
 
-> **Note:** Day 2. Wait 4 hours after the previous commit.
+> **Note:** Day 2. Wait until the next day.
 
 ```bash
-git add bomberman-dom/server/game.js
+git add server/game.js
 git commit -m "Add authoritative game simulation"
 git push
 ```
@@ -277,12 +237,12 @@ git push
 
 ---
 
-### Osama — Commit 12
+### Osama — Commit 11
 
-> **Note:** Day 2. Wait 3 hours after the previous commit.
+> **Note:** Day 2. Wait 2 hours after the previous commit.
 
 ```bash
-git add bomberman-dom/server/room.js
+git add server/room.js
 git commit -m "Add game room with lobby timers and chat relay"
 git push
 ```
@@ -301,12 +261,12 @@ It also checks nicknames, relays chat to every socket, limits message rates and 
 
 ---
 
-### Osama — Commit 13
+### Osama — Commit 12
 
-> **Note:** Day 3. Wait until the next day.
+> **Note:** Day 2. Wait 1 hour after the previous commit.
 
 ```bash
-git add bomberman-dom/server/index.js
+git add server/index.js
 git commit -m "Add static file server and WebSocket transport"
 git push
 ```
@@ -317,12 +277,12 @@ Only `client/`, `framework/` and `shared/` are public. A ping every 10 seconds f
 
 ---
 
-### Mohammed — Commit 14
+### Mohammed — Commit 13
 
-> **Note:** Day 3. Wait 3 hours after the previous commit.
+> **Note:** Day 2. Wait 2 hours after the previous commit.
 
 ```bash
-git add bomberman-dom/client/loop.js bomberman-dom/client/styles/board.css
+git add client/loop.js client/styles/board.css
 git commit -m "Add requestAnimationFrame loop and board styles"
 git push
 ```
@@ -333,12 +293,12 @@ git push
 
 ---
 
-### Osama — Commit 15
+### Osama — Commit 14
 
-> **Note:** Day 3. Wait 3 hours after the previous commit.
+> **Note:** Day 2. Wait 1 hour after the previous commit.
 
 ```bash
-git add bomberman-dom/client/net.js bomberman-dom/client/components/Countdown.js bomberman-dom/client/components/PlayerCounter.js
+git add client/net.js client/components/Countdown.js client/components/PlayerCounter.js
 git commit -m "Add WebSocket client, countdown and player counter"
 git push
 ```
@@ -349,12 +309,12 @@ git push
 
 ---
 
-### Mohammed — Commit 16
+### Mohammed — Commit 15
 
-> **Note:** Day 3. Wait 2 hours after the previous commit.
+> **Note:** Day 2. Wait 2 hours after the previous commit.
 
 ```bash
-git add bomberman-dom/client/input.js bomberman-dom/client/components/Hud.js
+git add client/input.js client/components/Hud.js
 git commit -m "Add keyboard input and in-game HUD"
 git push
 ```
@@ -365,12 +325,12 @@ git push
 
 ---
 
-### Osama — Commit 17
+### Osama — Commit 16
 
-> **Note:** Day 3. Wait 4 hours after the previous commit.
+> **Note:** Day 2. Wait 1 hour after the previous commit.
 
 ```bash
-git add bomberman-dom/client/screens/Nickname.js bomberman-dom/client/screens/Waiting.js
+git add client/screens/Nickname.js client/screens/Waiting.js
 git commit -m "Add nickname and waiting room screens"
 git push
 ```
@@ -379,12 +339,12 @@ git push
 
 ---
 
-### Mohammed — Commit 18
+### Mohammed — Commit 17
 
-> **Note:** Day 3. Wait 3 hours after the previous commit.
+> **Note:** Day 2. Wait 2 hours after the previous commit.
 
 ```bash
-git add bomberman-dom/client/screens/Game.js bomberman-dom/client/screens/GameOver.js bomberman-dom/client/styles/theme.css bomberman-dom/client/styles/screens.css
+git add client/screens/Game.js client/screens/GameOver.js client/styles/theme.css client/styles/screens.css
 git commit -m "Add game screens and interface styles"
 git push
 ```
@@ -395,12 +355,12 @@ git push
 
 ---
 
-### Mohammed — Commit 19
+### Mohammed — Commit 18
 
-> **Note:** Day 4. Wait until the next day.
+> **Note:** Day 2. Wait 1 hour after the previous commit.
 
 ```bash
-git add bomberman-dom/client/main.js bomberman-dom/client/index.html
+git add client/main.js client/index.html
 git commit -m "Wire up the client entry point"
 git push
 ```
@@ -411,12 +371,12 @@ git push
 
 ---
 
-### Yousif — Commit 20
+### Yousif — Commit 19
 
-> **Note:** Day 4. Wait 3 hours after the previous commit.
+> **Note:** Day 3. Wait until the next day.
 
 ```bash
-git add bomberman-dom/tests/physics.test.js
+git add tests/physics.test.js
 git commit -m "Add physics tests for collision and corner assist"
 git push
 ```
@@ -427,12 +387,12 @@ Run it with `node tests/physics.test.js`.
 
 ---
 
-### Osama — Commit 21
+### Osama — Commit 20
 
-> **Note:** Day 4. Wait 3 hours after the previous commit.
+> **Note:** Day 3. Wait 1 hour after the previous commit.
 
 ```bash
-git add bomberman-dom/tests/lobby.test.js
+git add tests/lobby.test.js
 git commit -m "Add lobby flow and countdown timer tests"
 git push
 ```
@@ -443,12 +403,12 @@ Run it with `node tests/lobby.test.js`. It takes about 11 minutes because the ti
 
 ---
 
-### Yousif — Commit 22
+### Yousif — Commit 21
 
-> **Note:** Day 4. Wait 4 hours after the previous commit.
+> **Note:** Day 3. Wait 2 hours after the previous commit.
 
 ```bash
-git add bomberman-dom/tests/map.test.js bomberman-dom/tests/simulation.test.js
+git add tests/map.test.js tests/simulation.test.js
 git commit -m "Add map generation and game simulation tests"
 git push
 ```
@@ -462,12 +422,12 @@ git push
 
 ---
 
-### Mohammed — Commit 23
+### Mohammed — Commit 22
 
-> **Note:** Day 4. Wait 2 hours after the previous commit.
+> **Note:** Day 3. Wait 1 hour after the previous commit.
 
 ```bash
-git add bomberman-dom/tests/client-logic.test.js bomberman-dom/tests/perf-audit.test.js bomberman-dom/tests/e2e-notes.md
+git add tests/client-logic.test.js tests/perf-audit.test.js tests/e2e-notes.md
 git commit -m "Add client logic tests and rendering performance audit"
 git push
 ```
@@ -482,12 +442,12 @@ git push
 
 ---
 
-### Osama — Commit 24
+### Osama — Commit 23
 
-> **Note:** Day 5. Wait until the next day.
+> **Note:** Day 3. Wait 2 hours after the previous commit.
 
 ```bash
-git add bomberman-dom/tests/protocol.test.js
+git add tests/protocol.test.js
 git commit -m "Add protocol abuse tests for the server"
 git push
 ```
@@ -498,12 +458,12 @@ Run it with `node tests/protocol.test.js`. It takes about 5 minutes.
 
 ---
 
-### Yousif — Commit 25
+### Yousif — Commit 24
 
-> **Note:** Day 5. Wait 3 hours after the previous commit.
+> **Note:** Day 3. Wait 1 hour after the previous commit.
 
 ```bash
-git add bomberman-dom/docs/architecture.md bomberman-dom/docs/BUILD-CONTRACT.md
+git add docs/architecture.md docs/BUILD-CONTRACT.md
 git commit -m "Add architecture notes and build contract"
 git push
 ```
@@ -512,12 +472,12 @@ git push
 
 ---
 
-### Osama — Commit 26
+### Osama — Commit 25
 
-> **Note:** Day 5. Wait 2 hours after the previous commit.
+> **Note:** Day 3. Wait 2 hours after the previous commit.
 
 ```bash
-git add bomberman-dom/docs/guide.md bomberman-dom/docs/glossary.md bomberman-dom/docs/VERIFY-REPORT.md bomberman-dom/docs/RESUME.md
+git add docs/guide.md docs/glossary.md docs/VERIFY-REPORT.md docs/RESUME.md
 git commit -m "Add run guide, glossary and verification notes"
 git push
 ```
@@ -533,12 +493,12 @@ git push
 
 ---
 
-### Mohammed — Commit 27
+### Mohammed — Commit 26
 
-> **Note:** Day 5. Wait 3 hours after the previous commit.
+> **Note:** Day 3. Wait 1 hour after the previous commit.
 
 ```bash
-git add bomberman-dom/prompt.md bomberman-dom/docs/SELF-AUDIT.md bomberman-dom/docs/reference/framework-DOCUMENTATION.md bomberman-dom/docs/experiments/01-paint-vs-composite.html bomberman-dom/docs/experiments/02-layers.html bomberman-dom/docs/experiments/03-frame-budget.html
+git add prompt.md docs/SELF-AUDIT.md docs/reference/framework-DOCUMENTATION.md docs/experiments/01-paint-vs-composite.html docs/experiments/02-layers.html docs/experiments/03-frame-budget.html
 git commit -m "Add project brief, self-audit and rendering experiments"
 git push
 ```
@@ -549,46 +509,33 @@ The demos show paint versus compositing, what layers cost, and the 16.6ms frame 
 
 ---
 
-### Yousif — Commit 28
+### Yousif — Commit 27
 
-> **Note:** Day 5. Wait 2 hours after the previous commit.
+> **Note:** Day 3. Wait 2 hours after the previous commit.
 
 ```bash
-git add bomberman-dom/DIVISION.md README.md
-git commit -m "Add team division and update README setup and structure"
+git add DIVISION.md README.md
+git commit -m "Add team division and correct README project structure"
 git push
 ```
 
-**Description:** Adds the file ownership and audit answers for each member. It also updates the README: setup now goes into the project folder, and the project structure section no longer lists `client/views/` and `client/assets/`, folders that don't exist.
+**Description:** Adds the file ownership and audit answers for each member. It also corrects the README's project structure section, which listed `client/views/` and `client/assets/`, folders that don't exist.
 
 This is the last commit, so the repository now matches the final project.
 
 ---
 
-## After the last commit
-
-Mohammed and Osama run these once, so their clones match the repository, including the updated README:
-
-```bash
-git fetch origin
-git reset --hard origin/main
-```
-
----
-
 ## Summary
 
-| Member | Commits | Commit numbers |
-|---|---|---|
-| Yousif | 10 | 1, 2, 4, 7, 9, 11, 20, 22, 25, 28 |
-| Mohammed | 9 | 3, 5, 10, 14, 16, 18, 19, 23, 27 |
-| Osama | 9 | 6, 8, 12, 13, 15, 17, 21, 24, 26 |
-| **Total** | **28** | |
+| Member          | Commits      | Commit numbers                   |
+| --------------- | ------------ | -------------------------------- |
+| Yousif          | 9            | 1, 3, 6, 8, 10, 19, 21, 24, 27   |
+| Mohammed        | 9            | 2, 4, 9, 13, 15, 17, 18, 22, 26  |
+| Osama           | 9            | 5, 7, 11, 12, 14, 16, 20, 23, 25 |
+| **Total** | **27** |                                  |
 
-Yousif's list includes the three config files twice: at the top of the repository in commit 1, and in `bomberman-dom/` after commit 2 moves them.
-
-| Member | Files committed |
-|---|---|
-| **Yousif** (19) | `.gitignore`, `package.json`, `package-lock.json`, `bomberman-dom/.gitignore`, `bomberman-dom/package.json`, `bomberman-dom/package-lock.json`, `bomberman-dom/shared/constants.js`, `bomberman-dom/shared/protocol.js`, `bomberman-dom/shared/physics.js`, `bomberman-dom/server/map.js`, `bomberman-dom/server/bombs.js`, `bomberman-dom/server/game.js`, `bomberman-dom/tests/physics.test.js`, `bomberman-dom/tests/map.test.js`, `bomberman-dom/tests/simulation.test.js`, `bomberman-dom/docs/architecture.md`, `bomberman-dom/docs/BUILD-CONTRACT.md`, `bomberman-dom/DIVISION.md`, `README.md` |
-| **Mohammed** (28) | `bomberman-dom/framework/dom.js`, `bomberman-dom/framework/diff.js`, `bomberman-dom/framework/state.js`, `bomberman-dom/framework/events.js`, `bomberman-dom/framework/app.js`, `bomberman-dom/framework/router.js`, `bomberman-dom/framework/index.js`, `bomberman-dom/client/gameState.js`, `bomberman-dom/client/board.js`, `bomberman-dom/client/loop.js`, `bomberman-dom/client/styles/board.css`, `bomberman-dom/client/input.js`, `bomberman-dom/client/components/Hud.js`, `bomberman-dom/client/screens/Game.js`, `bomberman-dom/client/screens/GameOver.js`, `bomberman-dom/client/styles/theme.css`, `bomberman-dom/client/styles/screens.css`, `bomberman-dom/client/main.js`, `bomberman-dom/client/index.html`, `bomberman-dom/tests/client-logic.test.js`, `bomberman-dom/tests/perf-audit.test.js`, `bomberman-dom/tests/e2e-notes.md`, `bomberman-dom/prompt.md`, `bomberman-dom/docs/SELF-AUDIT.md`, `bomberman-dom/docs/reference/framework-DOCUMENTATION.md`, `bomberman-dom/docs/experiments/01-paint-vs-composite.html`, `bomberman-dom/docs/experiments/02-layers.html`, `bomberman-dom/docs/experiments/03-frame-budget.html` |
-| **Osama** (16) | `bomberman-dom/client/store.js`, `bomberman-dom/client/components/Notice.js`, `bomberman-dom/client/components/Chat.js`, `bomberman-dom/server/room.js`, `bomberman-dom/server/index.js`, `bomberman-dom/client/net.js`, `bomberman-dom/client/components/Countdown.js`, `bomberman-dom/client/components/PlayerCounter.js`, `bomberman-dom/client/screens/Nickname.js`, `bomberman-dom/client/screens/Waiting.js`, `bomberman-dom/tests/lobby.test.js`, `bomberman-dom/tests/protocol.test.js`, `bomberman-dom/docs/guide.md`, `bomberman-dom/docs/glossary.md`, `bomberman-dom/docs/VERIFY-REPORT.md`, `bomberman-dom/docs/RESUME.md` |
+| Member                  | Files committed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Yousif** (16)   | `.gitignore`, `package.json`, `package-lock.json`, `shared/constants.js`, `shared/protocol.js`, `shared/physics.js`, `server/map.js`, `server/bombs.js`, `server/game.js`, `tests/physics.test.js`, `tests/map.test.js`, `tests/simulation.test.js`, `docs/architecture.md`, `docs/BUILD-CONTRACT.md`, `DIVISION.md`, `README.md`                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Mohammed** (28) | `framework/dom.js`, `framework/diff.js`, `framework/state.js`, `framework/events.js`, `framework/app.js`, `framework/router.js`, `framework/index.js`, `client/gameState.js`, `client/board.js`, `client/loop.js`, `client/styles/board.css`, `client/input.js`, `client/components/Hud.js`, `client/screens/Game.js`, `client/screens/GameOver.js`, `client/styles/theme.css`, `client/styles/screens.css`, `client/main.js`, `client/index.html`, `tests/client-logic.test.js`, `tests/perf-audit.test.js`, `tests/e2e-notes.md`, `prompt.md`, `docs/SELF-AUDIT.md`, `docs/reference/framework-DOCUMENTATION.md`, `docs/experiments/01-paint-vs-composite.html`, `docs/experiments/02-layers.html`, `docs/experiments/03-frame-budget.html` |
+| **Osama** (16)    | `client/store.js`, `client/components/Notice.js`, `client/components/Chat.js`, `server/room.js`, `server/index.js`, `client/net.js`, `client/components/Countdown.js`, `client/components/PlayerCounter.js`, `client/screens/Nickname.js`, `client/screens/Waiting.js`, `tests/lobby.test.js`, `tests/protocol.test.js`, `docs/guide.md`, `docs/glossary.md`, `docs/VERIFY-REPORT.md`, `docs/RESUME.md`                                                                                                                                                                                                                                                                                                                                                               |
