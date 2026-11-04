@@ -2,8 +2,6 @@
 
 This plan publishes the finished project as 27 commits over 3 days, 9 from each member. Each person commits only their own part, from their own machine and Gitea account.
 
-You can also read this plan online: https://github.com/Yousif-SH/bomberman-dom-divison/blob/main/README.md
-
 | Day | Commits  | Done by the end of the day                         |
 | --- | -------- | -------------------------------------------------- |
 | 1   | 1 to 9   | Framework, shared rules, map and board             |
